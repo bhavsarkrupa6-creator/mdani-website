@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+}
+
+enum StockStatus {
+  IN_STOCK
+  OUT_OF_STOCK
+}
+
+enum RepairStatus {
+  PENDING
+  CONTACTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum ContactMethod {
+  PHONE
+  EMAIL
+  WHATSAPP
+}
+
+enum BannerLocation {
+  AFTER_HERO
+  AFTER_PRODUCTS
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  image       String?
+  parentId    String?
+  parent      Category?  @relation("CategoryToSubcategory", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryToSubcategory")
+  products    Product[]
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Product {
+  id              String      @id @default(cuid())
+  name            String
+  slug            String      @unique
+  description     String?
+  specifications  Json?
+  features        String[]
+  price           Float
+  discountPrice   Float?
+  stockStatus     StockStatus @default(IN_STOCK)
+  isPublished     Boolean     @default(true)
+  isFeatured      Boolean     @default(false)
+  image           String?
+  galleryImages   String[]
+  categoryId      String
+  category        Category    @relation(fields: [categoryId], references: [id])
+  brand           String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([categoryId])
+  @@index([isPublished])
+  @@index([isFeatured])
+}
+
+model Banner {
+  id        String         @id @default(cuid())
+  title     String?
+  subtitle  String?
+  image     String
+  ctaLink   String?
+  ctaText   String?
+  location  BannerLocation
+  displayOrder     Int            @default(0)
+  isActive  Boolean        @default(true)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  message   String
+  rating    Int      @default(5)
+  image     String?
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model ContactInfo {
+  id            String  @id @default(cuid())
+  phone         String?
+  whatsapp      String?
+  email         String?
+  address       String?
+  googleMapsUrl String?
+  updatedAt     DateTime @updatedAt
+}
+
+model SiteContent {
+  id              String   @id @default(cuid())
+  heroTitle       String?
+  heroSubtitle    String?
+  heroCtaText     String?
+  homepageContent String?
+  footerContent   String?
+  aboutUsContent  String?
+  updatedAt       DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String
+  productId String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model RepairRequest {
+  id              String        @id @default(cuid())
+  name            String
+  phone           String
+  email           String
+  deviceType      String
+  brand           String
+  model           String
+  problemDescription String
+  images          String[]
+  preferredContact ContactMethod
+  status          RepairStatus  @default(PENDING)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}

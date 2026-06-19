@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#BDD8E9" />
+  <g transform="translate(200,170)" fill="none" stroke="#0A4174" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M -90 0 C -90 -40 -60 -55 -30 -55 L 30 -55 C 60 -55 90 -40 90 0 C 90 35 70 55 45 55 C 30 55 25 35 0 35 C -25 35 -30 55 -45 55 C -70 55 -90 35 -90 0 Z" fill="#7BBDE8" />
+    <line x1="-55" y1="-15" x2="-55" y2="15" />
+    <line x1="-70" y1="0" x2="-40" y2="0" />
+    <circle cx="45" cy="-15" r="6" fill="#0A4174" stroke="none" />
+    <circle cx="60" cy="0" r="6" fill="#0A4174" stroke="none" />
+    <circle cx="45" cy="15" r="6" fill="#0A4174" stroke="none" />
+    <circle cx="30" cy="0" r="6" fill="#0A4174" stroke="none" />
+  </g>
+  <text x="200" y="290" font-family="Inter, sans-serif" font-size="20" font-weight="600" fill="#0A4174" text-anchor="middle">
+    Image Coming Soon
+  </text>
+</svg>
