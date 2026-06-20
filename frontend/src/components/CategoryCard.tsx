@@ -18,24 +18,16 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   slug, 
   image, 
   description, 
-  index = 0,
   onClick 
 }) => {
   const href = slug === 'repair-services' ? '/repair' : `/category/${slug}`;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.05 }}
-      whileHover={{ y: -8 }}
-      className="relative h-full"
-    >
+    <div className="relative h-full">
       <Link
         to={href}
         onClick={onClick}
-        className="group relative flex flex-col items-center justify-center text-center gap-4 bg-gradient-to-br from-[#0f2035]/60 to-[#0a1929]/40 backdrop-blur-md border border-white/8 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 hover:border-cyan-400/40 hover:from-[#172f4a]/80 hover:to-[#0d2340]/60 transition-all duration-500 overflow-hidden shadow-xl hover:shadow-2xl min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]"
+        className="group relative flex flex-col items-center justify-center text-center gap-4 bg-gradient-to-br from-[#0f2035]/60 to-[#0a1929]/40 backdrop-blur-md border border-white/8 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 hover:border-cyan-400/40 hover:from-[#172f4a]/80 hover:to-[#0d2340]/60 transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-xl hover:shadow-2xl min-h-[200px] sm:min-h-[240px] lg:min-h-[280px]"
       >
         {/* Premium Glow Effect */}
         <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/0 via-cyan-400/5 to-cyan-500/0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500 pointer-events-none" />
@@ -77,7 +69,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
           className="absolute top-4 right-4 w-2 h-2 rounded-full bg-cyan-400/30"
         />
       </Link>
-    </motion.div>
+    </div>
   );
 };
 
