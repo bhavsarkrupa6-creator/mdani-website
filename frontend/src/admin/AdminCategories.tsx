@@ -98,6 +98,42 @@ const AdminCategories: React.FC = () => {
     }
   };
 
+  const handleDragStart = (id: string) => {
+    setDraggedId(id);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = async (targetId: string) => {
+    if (!draggedId || draggedId === targetId) return;
+
+    const draggedIndex = categories.findIndex((c) => c.id === draggedId);
+    const targetIndex = categories.findIndex((c) => c.id === targetId);
+
+    if (draggedIndex === -1 || targetIndex === -1) return;
+
+    const newCategories = [...categories];
+    const [draggedCat] = newCategories.splice(draggedIndex, 1);
+    newCategories.splice(targetIndex, 0, draggedCat);
+
+    setCategories(newCategories);
+    setDraggedId(null);
+
+    try {
+      const categoryOrders = newCategories.map((cat, idx) => ({
+        id: cat.id,
+        order: idx,
+      }));
+      await api.put('/categories/order', { categoryOrders });
+      toast.success('Categories reordered');
+    } catch (err: any) {
+      toast.error('Failed to reorder categories');
+      fetchCategories();
+    }
+  };
+
   if (loading) return <LoadingSpinner full size="lg" />;
 
   const parentOptions = categories.filter((c) => !c.parentId);
@@ -236,39 +272,3 @@ const AdminCategories: React.FC = () => {
 };
 
 export default AdminCategories;
-
-  const handleDragStart = (id: string) => {
-    setDraggedId(id);
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = async (targetId: string) => {
-    if (!draggedId || draggedId === targetId) return;
-
-    const draggedIndex = categories.findIndex(c => c.id === draggedId);
-    const targetIndex = categories.findIndex(c => c.id === targetId);
-
-    if (draggedIndex === -1 || targetIndex === -1) return;
-
-    const newCategories = [...categories];
-    const [draggedCat] = newCategories.splice(draggedIndex, 1);
-    newCategories.splice(targetIndex, 0, draggedCat);
-
-    setCategories(newCategories);
-    setDraggedId(null);
-
-    try {
-      const categoryOrders = newCategories.map((cat, idx) => ({
-        id: cat.id,
-        order: idx,
-      }));
-      await api.put('/categories/order', { categoryOrders });
-      toast.success('Categories reordered');
-    } catch (err: any) {
-      toast.error('Failed to reorder categories');
-      fetchCategories();
-    }
-  };
