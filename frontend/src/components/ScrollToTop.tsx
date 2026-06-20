@@ -9,6 +9,8 @@ const ScrollToTop: React.FC = () => {
   const prevPathname = useRef<string>('');
 
   useEffect(() => {
+    console.log('[ScrollToTop]', { pathname, navigationType, saved: scrollPositions[pathname] });
+
     // Save the scroll position of the page we're leaving
     if (prevPathname.current && prevPathname.current !== pathname) {
       scrollPositions[prevPathname.current] = window.scrollY;
